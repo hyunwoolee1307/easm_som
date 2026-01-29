@@ -196,5 +196,15 @@ Example paths (symlinked data root):
 - /home/hyunwoo/Data/Obs_NCAR/olr.day.mean.nc
 - /home/hyunwoo/Data/Obs_OISST/v2.1/
 
+11. Figure Regeneration
+
+To regenerate all figures with publication-ready titles/labels:
+
+```
+TMPDIR=/tmp /home/hyunwoo/miniforge3/envs/easm_som/bin/python /home/hyunwoo/EASM_SOM/src/regen_figures.py
+```
+
+This script recreates all plots in `results/` from existing diagnostics arrays and tables.
+
 Run log:
 - `log.md`

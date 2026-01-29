@@ -13,3 +13,10 @@
 - Initial run failed during expanded-domain u850 diagnostics due to index mismatch; rerun completed successfully.
 - NetCDF I/O uses `h5netcdf` engine when available.
 - SST regridding uses xesmf bilinear weights (`results/sst_to_uwnd_weights.nc`).
+
+## 2026-01-29 Updates
+- Added figure regeneration script: `src/regen_figures.py`.
+- Updated plot titles and axis labels to publication-ready phrasing.
+- Generated EOF PC time series figure: `results/eof_pc_timeseries.png`.
+- Generated climatological u850 JJA mean map: `results/u850_jja_mean_1991_2023.png`.
+- Regenerated all figures using the new script.

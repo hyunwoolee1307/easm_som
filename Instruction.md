@@ -34,6 +34,7 @@ Implementation rules:
 - Use 1991–2020 JJA daily climatology for standardization.
 - Do not modify SOM size without explicit justification.
 - Always interpret SOM nodes using established monsoon dynamics concepts.
+- For figure layout, use matplotlib subplots with layout="constrained" (avoid tight_layout).
 
 Data path convention:
 - Use /home/hyunwoo/Data (symlink to /mnt/d/Data) for raw datasets.

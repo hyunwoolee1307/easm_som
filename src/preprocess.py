@@ -182,7 +182,10 @@ def main() -> None:
 
     _check_u850_only(args.var)
 
-    ds = xr.open_dataset(args.input)
+    try:
+        ds = xr.open_dataset(args.input, engine="h5netcdf")
+    except Exception:
+        ds = xr.open_dataset(args.input)
     da = ds[args.var]
     if "level" in da.dims or "level" in da.coords:
         da = da.sel(level=args.level)

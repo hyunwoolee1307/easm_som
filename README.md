@@ -26,6 +26,9 @@ SST: Sea Surface Temperature (diagnostic only)
 
 NCAR reanalysis / observational datasets
 
+Data root (symlinked):
+- /home/hyunwoo/Data  (symlink to /mnt/d/Data)
+
 3.3 Temporal Coverage
 
 1991–2023 (daily)
@@ -187,3 +190,11 @@ Key outputs (results/):
 
 Environment:
 - Conda env: /home/hyunwoo/miniforge3/envs/easm_som
+
+Example paths (symlinked data root):
+- /home/hyunwoo/Data/Obs_NCAR/uwnd.{year}.nc
+- /home/hyunwoo/Data/Obs_NCAR/olr.day.mean.nc
+- /home/hyunwoo/Data/Obs_OISST/v2.1/
+
+Run log:
+- `log.md`

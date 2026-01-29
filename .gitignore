@@ -6,3 +6,9 @@ Miniforge3-*.sh
 
 # legacy archive
 /archive/
+
+# large binary data
+*.npy
+*.nc
+*.nc4
+*.cdf

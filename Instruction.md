@@ -35,6 +35,9 @@ Implementation rules:
 - Do not modify SOM size without explicit justification.
 - Always interpret SOM nodes using established monsoon dynamics concepts.
 
+Data path convention:
+- Use /home/hyunwoo/Data (symlink to /mnt/d/Data) for raw datasets.
+
 Interpretation discipline:
 - Avoid claims of direct causality from SST or convection.
 - Frame conclusions in terms of regime-dependent circulation behavior.

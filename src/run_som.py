@@ -6,7 +6,7 @@ from som import Som
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train SOM on preprocessed u850 anomalies")
-    parser.add_argument("--x", required=True, help="Path to .npy array with shape (nd, nt)")
+    parser.add_argument("--x", required=True, help="Path to .npy array with shape (nd, nt); e.g., data/u850_som_input.npy")
     parser.add_argument("--m1", type=int, default=3)
     parser.add_argument("--m2", type=int, default=3)
     parser.add_argument("--nter", type=int, default=500)

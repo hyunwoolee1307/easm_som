@@ -12,3 +12,8 @@ Miniforge3-*.sh
 *.nc
 *.nc4
 *.cdf
+*.csv
+*.png
+
+# cache
+__pycache__/

@@ -1,0 +1,5 @@
+season: JJA
+climatology_years: "1991-2023"
+detrend: false
+standardize: zscore
+area_weighted: true

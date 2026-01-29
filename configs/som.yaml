@@ -1,0 +1,13 @@
+input_variable: u850_anomaly
+map_shape:
+  m1: 3
+  m2: 3
+training:
+  nter: 500
+  alpha0: 0.5
+  taua: 200.0
+  alphamin: 0.01
+  sigma0: 1.5
+  taus: 200.0
+  normalize_weights: true
+  seed: 1234

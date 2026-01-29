@@ -1,0 +1,8 @@
+# local installers
+Miniforge3-*.sh
+
+# data directories
+/data/
+
+# legacy archive
+/archive/

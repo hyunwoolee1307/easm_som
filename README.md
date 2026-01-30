@@ -82,7 +82,7 @@ pytest Tests/
 - **기후지수 상관**: `Results/node_climate_correlations.csv`
 - **유의한 상관만 표시한 히트맵**: `Results/Figures/heatmap_node_climate_correlations_significant.png`
 - **Kriging variogram (global best)**: spherical 모델 사용 (U850만 분석)
-- **노드-지수 공간 상관**: `Results/node_index_spatial_correlations.csv` (U850만 분석)
+- **SOM vs Kohonen 비교**: `Results/compare_som_kohonen_confusion.csv`, `Results/compare_som_kohonen_metrics.csv`
 
 ---
 

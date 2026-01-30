@@ -162,3 +162,14 @@ python Scripts/run_kriging_node_composites.py
 ```
 
 - **Output**: `Results/kriging_variogram_summary.csv`, `Results/Figures/kriging_u850_node_*.png`
+
+### Kohonen SOM (R) + Comparison
+
+```bash
+Rscript Scripts/run_kohonen_som.R
+python Scripts/run_compare_som_kohonen.py
+```
+
+- **Output**: `Results/kohonen_bmu.csv`, `Results/kohonen_codes.csv`,
+  `Results/compare_som_kohonen_confusion.csv`, `Results/compare_som_kohonen_metrics.csv`,
+  `Results/Figures/compare_som_kohonen_confusion.png`

@@ -165,10 +165,10 @@ def main():
     m1 = 3
     m2 = 3
     nter = 4000
-    alpha0 = 0.5
+    alpha0 = 0.05
     alphamin = 0.05
     taua = 1000.0
-    sigma0 = 2.0
+    sigma0 = 0.5
     taus = 500.0
     
     print("\n--- Starting SOM Training ---")

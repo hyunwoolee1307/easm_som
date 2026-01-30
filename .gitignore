@@ -45,3 +45,6 @@ htmlcov/
 # OS
 Thumbs.db
 .DS_Store
+
+# R packages
+.R_libs/

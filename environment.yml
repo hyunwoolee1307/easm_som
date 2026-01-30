@@ -1,0 +1,27 @@
+name: nwp_som
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - scipy
+  - matplotlib
+  - pandas
+  - statsmodels
+  - seaborn
+  - xarray
+  - netcdf4
+  - h5netcdf
+  - cartopy
+  - cftime
+  - nc-time-axis
+  - pint-xarray
+  - sparse
+  - xesmf
+  - xeofs
+  - dask
+  - bottleneck
+  - numexpr
+  - numbagg
+  - esmpy
+  - pip

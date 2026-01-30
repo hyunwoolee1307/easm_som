@@ -190,7 +190,10 @@ def main():
             ax2.axhline(0, color="black", linewidth=0.8, alpha=0.6)
             ax.set_title(f"Node {node}")
             ax.set_ylim(y_limits)
-            ax2.set_ylim(-3, 3)
+            if idx_name == "NPGO":
+                ax2.set_ylim(-1, 1)
+            else:
+                ax2.set_ylim(-3, 3)
             ax.grid(True, linestyle="--", alpha=0.4)
 
         handles, labels = axes[0].get_legend_handles_labels()

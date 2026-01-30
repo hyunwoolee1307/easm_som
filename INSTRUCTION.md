@@ -20,6 +20,7 @@
 - SOM node composites: `Scripts/run_som_node_composites.py`
 - Mann–Kendall trends: `Scripts/run_mk_trend_node_freq.py`, `Scripts/run_mk_trend_node_freq_decadal.py`
 - Periodogram + red-noise + Fisher g-test: `Scripts/run_node_periodogram.py`
+- U850-only kriging: `Scripts/run_kriging_node_composites.py` (SST/OLR는 합성장만 생성)
 
 ## Output Notes
 - Figures are written to `Results/Figures/`.

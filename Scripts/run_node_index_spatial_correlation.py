@@ -171,8 +171,6 @@ def main() -> None:
         index_series[name] = seasonal_mean(series, [6, 7, 8])
 
     configs = [
-        ("SST", DATA_DIR / "sst_anom_regridded.nc"),
-        ("OLR", DATA_DIR / "olr_anom2.nc"),
         ("U850", DATA_DIR / "uwnd850_anom.nc"),
     ]
 
@@ -226,34 +224,34 @@ def main() -> None:
         node = int(row["node"])
         idx_name = row["index"]
 
-        pair_out = FIG_DIR / f"node_index_spatial_corr_node{node}_{idx_name}.png"
-        fig, axes = plt.subplots(1, 3, figsize=(12, 4), layout="constrained")
-        for ax, var_name in zip(axes, ["SST", "OLR", "U850"]):
-            comp = node_composites[var_name][node]
-            idx_map = index_maps.get(var_name, {}).get(idx_name)
-            if idx_map is None:
-                ax.set_title(f"{var_name}: no map")
-                ax.axis("off")
-                r = np.nan
-                n = 0
-            else:
-                r, n = spatial_corr(comp, idx_map)
-                ax.scatter(idx_map.ravel(), comp.ravel(), s=4, alpha=0.3, color="tab:blue")
-                ax.axhline(0, color="gray", linewidth=0.8, alpha=0.6)
-                ax.axvline(0, color="gray", linewidth=0.8, alpha=0.6)
-                ax.set_title(f"{var_name} r={r:.2f} (n={n})")
-                ax.set_xlabel("Index corr map")
-                ax.set_ylabel("Node composite")
+        pair_out = FIG_DIR / f"node_index_spatial_corr_u850_node{node}_{idx_name}.png"
+        fig, ax = plt.subplots(1, 1, figsize=(5, 4), layout="constrained")
+        var_name = "U850"
+        comp = node_composites[var_name][node]
+        idx_map = index_maps.get(var_name, {}).get(idx_name)
+        if idx_map is None:
+            ax.set_title(f"{var_name}: no map")
+            ax.axis("off")
+            r = np.nan
+            n = 0
+        else:
+            r, n = spatial_corr(comp, idx_map)
+            ax.scatter(idx_map.ravel(), comp.ravel(), s=4, alpha=0.3, color="tab:blue")
+            ax.axhline(0, color="gray", linewidth=0.8, alpha=0.6)
+            ax.axvline(0, color="gray", linewidth=0.8, alpha=0.6)
+            ax.set_title(f"{var_name} r={r:.2f} (n={n})")
+            ax.set_xlabel("Index corr map")
+            ax.set_ylabel("Node composite")
 
-            rows.append(
-                {
-                    "node": node,
-                    "index": idx_name,
-                    "variable": var_name,
-                    "spatial_corr": r,
-                    "n_grid": n,
-                }
-            )
+        rows.append(
+            {
+                "node": node,
+                "index": idx_name,
+                "variable": var_name,
+                "spatial_corr": r,
+                "n_grid": n,
+            }
+        )
 
         fig.suptitle(f"Spatial Correlation: Node {node} vs {idx_name}", fontsize=12)
         fig.savefig(pair_out, dpi=300)

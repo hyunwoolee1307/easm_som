@@ -76,12 +76,13 @@ pytest Tests/
 
 ## 📊 주요 산출물
 - **SOM 결과**: `Results/som_neuron_indices_jja.csv`, `Results/som_yearly_stats.csv`
-- **노드 합성장**: `Results/Figures/som_node_composites_{sst,olr,u850}.png`
+- **노드 합성장**: `Results/Figures/som_node_composites_{sst,olr,u850}.png` (SST/OLR는 합성장만 생성)
 - **노드 빈도 추세**: `Results/mann_kendall_node_trends.csv`, `Results/mann_kendall_node_trends_decadal.csv`
 - **노드 주기성**: `Results/node_periodogram_summary.csv`
 - **기후지수 상관**: `Results/node_climate_correlations.csv`
 - **유의한 상관만 표시한 히트맵**: `Results/Figures/heatmap_node_climate_correlations_significant.png`
-- **Kriging variogram (global best)**: spherical 모델 사용
+- **Kriging variogram (global best)**: spherical 모델 사용 (U850만 분석)
+- **노드-지수 공간 상관**: `Results/node_index_spatial_correlations.csv` (U850만 분석)
 
 ---
 

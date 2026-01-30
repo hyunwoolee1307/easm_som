@@ -123,6 +123,7 @@ python Scripts/run_som_node_composites.py
 
 - **Input**: `Results/som_neuron_indices_jja.csv` + daily anomaly fields
 - **Output**: `Results/Figures/som_node_composites_*.png`
+- **Note**: SST/OLR는 합성장만 생성하고, 이후 분석은 U850만 사용
 
 ### Node trend tests (Mann–Kendall)
 
@@ -154,3 +155,10 @@ python Scripts/run_node_periodogram.py
 ## 8) Fast Rebuild (Core Only)
 
 지수 기반 재빌드 단계는 현재 워크스페이스에서 제거되었습니다.
+### U850-only kriging (variogram fit + BLUE)
+
+```bash
+python Scripts/run_kriging_node_composites.py
+```
+
+- **Output**: `Results/kriging_variogram_summary.csv`, `Results/Figures/kriging_u850_node_*.png`

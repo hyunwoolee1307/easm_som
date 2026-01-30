@@ -14,7 +14,7 @@ This study investigates the variability of the East Asian Summer Monsoon (EASM) 
 - **Node Frequency Trends**: Mann–Kendall test on annual and decadal node counts.
 - **Periodicity**: FFT periodogram (2–16.5 yr), AR(1) red-noise 95% significance, Fisher g-test.
 - **Clustering Diagnostics**: Dendrogram of node composites and MDS/KMeans comparison.
-- **Spatial Interpolation**: Variogram-based kriging (spherical/exponential/gaussian models; least squares fit; BLUE/ordinary kriging).
+- **Spatial Interpolation**: Variogram-based kriging for **U850 only** (global best model; BLUE/ordinary kriging).
 
 ## 3. Key Findings
 
@@ -34,8 +34,8 @@ This study investigates the variability of the East Asian Summer Monsoon (EASM) 
 - Dendrograms indicate hierarchical similarity among node composites.
 - SOM vs KMeans comparison shows partial agreement with non-trivial reassignment across clusters.
 
-### 3.5 Variogram + Kriging
-- Global best variogram model (mean SSE) is **spherical**, used for all kriging runs.
+### 3.5 Variogram + Kriging (U850 only)
+- Global best variogram model (mean SSE) is **spherical**, used for U850 kriging runs.
 - Kriged fields provide smoothed spatial estimates consistent with SOM composites.
 
 ## 4. Conclusion

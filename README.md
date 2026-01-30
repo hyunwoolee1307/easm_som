@@ -95,6 +95,3 @@ pytest Tests/
   `Scripts/run_node_climate_correlations.py`  
   `Scripts/run_node_climate_correlations_significant_plot.py`  
   `Scripts/run_node_climate_lagged_correlations.py`
-- **Kohonen SOM 비교 (선택)**  
-  `Scripts/run_kohonen_som.R`  
-  `Scripts/run_compare_som_kohonen.py`

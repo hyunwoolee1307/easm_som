@@ -31,7 +31,6 @@ NWP_SOM/
 │   └── test_analysis_utils.py
 ├── Results/                # 분석 결과
 │   ├── Figures/            # 생성된 그래프 (PNG)
-│   └── Indices/            # 생성된 지수 데이터 (CSV)
 └── README.md               # 프로젝트 문서
 ```
 
@@ -51,22 +50,19 @@ conda activate nwp_som
 ```
 `Data/`와 `Results/`는 로컬 경로(`/home/hyunwoo/Projects/NWP_SOM/`)에 존재합니다.
 
-### 2. 지수/상관분석
-노드 빈도와 기후 지수 간 상관을 비교합니다.
-
+### 2. 핵심 실행
 ```bash
-python Scripts/run_node_climate_correlations.py
-python Scripts/run_node_climate_correlations_significant_plot.py
+python Scripts/run_som_cluster.py
 ```
 
-### 4. 설정 변경 (`config.py`)
+### 3. 설정 변경 (`config.py`)
 데이터 경로, 분석 시즌, 도메인 설정은 `Scripts/config.py`에서 중앙 관리됩니다.
 ```python
 # Scripts/config.py 예시
 SEASONS = {"DJF": 12, "MAM": 3, "JJA": 6, "SON": 9}
 ```
 
-### 5. 테스트 실행 (`pytest`)
+### 4. 테스트 실행 (`pytest`)
 분석 함수의 무결성을 검증하기 위해 유닛 테스트를 실행할 수 있습니다.
 ```bash
 pytest Tests/
@@ -81,8 +77,8 @@ pytest Tests/
 - **노드 주기성**: `Results/node_periodogram_summary.csv`
 - **기후지수 상관**: `Results/node_climate_correlations.csv`
 - **유의한 상관만 표시한 히트맵**: `Results/Figures/heatmap_node_climate_correlations_significant.png`
-- **Kriging variogram (global best)**: spherical 모델 사용 (U850만 분석)
-- **SOM vs Kohonen 비교**: `Results/compare_som_kohonen_confusion.csv`, `Results/compare_som_kohonen_metrics.csv`
+- **계절 지연 상관**: `Results/node_climate_lagged_correlations.csv`, `Results/Figures/heatmap_lagged_correlations_*.png`
+- **Kriging variogram (global best)**: spherical 모델 사용 (SST/OLR/U850)
 
 ---
 
@@ -95,3 +91,10 @@ pytest Tests/
   `Scripts/run_mk_trend_node_freq_decadal.py`
 - **노드 주기성(Periodogram + Red-noise + Fisher g-test)**  
   `Scripts/run_node_periodogram.py`
+- **노드-지수 상관/지연 상관**  
+  `Scripts/run_node_climate_correlations.py`  
+  `Scripts/run_node_climate_correlations_significant_plot.py`  
+  `Scripts/run_node_climate_lagged_correlations.py`
+- **Kohonen SOM 비교 (선택)**  
+  `Scripts/run_kohonen_som.R`  
+  `Scripts/run_compare_som_kohonen.py`

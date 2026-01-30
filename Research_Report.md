@@ -34,9 +34,15 @@ This study investigates the variability of the East Asian Summer Monsoon (EASM) 
 - Dendrograms indicate hierarchical similarity among node composites.
 - SOM vs KMeans comparison shows partial agreement with non-trivial reassignment across clusters.
 
-### 3.5 Variogram + Kriging (U850 only)
-- Global best variogram model (mean SSE) is **spherical**, used for U850 kriging runs.
+### 3.5 Variogram + Kriging (SST/OLR/U850)
+- Global best variogram model (mean SSE) is **spherical**, used for SST/OLR/U850 kriging runs across all nodes.
 - Kriged fields provide smoothed spatial estimates consistent with SOM composites.
+
+### 3.6 Results Summary (Current Run)
+- SOM training uses **alpha=0.05**, **radius=0.5**, **rlen=4000**, seed fixed.
+- Stippled SOM composite colorbar range is **-5 to +5** for U850.
+- NPGO node-frequency plot right y-axis range is **-1 to +1**.
+- SST/OLR/U850 kriging outputs are generated for **all nodes**.
 
 ## 4. Conclusion
 The SOM-based workflow provides a consistent framework to summarize EASM variability, evaluate node behavior over time, and compare clustering structures. Index-based teleconnection interpretations are out of scope for the current workspace.

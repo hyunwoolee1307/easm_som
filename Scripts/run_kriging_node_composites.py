@@ -178,6 +178,8 @@ def main():
     node_ids = node_df["node_id"].to_numpy()
 
     configs = [
+        (DATA_DIR / "sst_anom_regridded.nc", "SST", "anom"),
+        (DATA_DIR / "olr_anom2.nc", "OLR", "olr"),
         (DATA_DIR / "uwnd850_anom.nc", "U850", "uwnd"),
     ]
 
@@ -245,7 +247,6 @@ def main():
     print(f"Selected global variogram model: {best_model}")
 
     summary_rows = []
-    sse_thresholds = {}
     for path, var_label, var_name_hint in configs:
         ds = xr.open_dataset(path)
         var = var_name_hint if var_name_hint in ds.data_vars else list(ds.data_vars)[0]
@@ -258,17 +259,6 @@ def main():
         lats = da_sel.lat.values
         lons = da_sel.lon.values
 
-        # Variable-specific SSE threshold (lower quartile)
-        sse_vals = []
-        for node in range(1, 10):
-            cache = fit_cache.get((var_label, node))
-            if cache is None:
-                continue
-            params, sse = cache["fits"][best_model]
-            sse_vals.append(sse)
-        threshold = np.nanpercentile(sse_vals, 25) if sse_vals else np.inf
-        sse_thresholds[var_label] = threshold
-
         for node in range(1, 10):
             cache = fit_cache.get((var_label, node))
             if cache is None:
@@ -280,48 +270,46 @@ def main():
             h = cache["h"]
             gamma = cache["gamma"]
             params, sse = cache["fits"][best_model]
-            is_significant = sse <= threshold
 
-            if is_significant:
-                # Plot variogram (global best model only)
-                plt.figure(figsize=(6, 4), layout="constrained")
-                plt.scatter(h, gamma, color="black", label="Empirical")
-                hs = np.linspace(np.min(h), np.max(h), 200)
-                fit = variogram_func(best_model)(hs, *params)
-                plt.plot(hs, fit, label=best_model)
-                plt.title(f"{var_label} Node {node} Variogram ({best_model})")
-                plt.xlabel("Distance (km)")
-                plt.ylabel("Semivariance")
-                plt.legend()
-                plt.grid(True, linestyle="--", alpha=0.4)
-                out_vario = FIG_DIR / f"variogram_{var_label.lower()}_node_{node}.png"
-                plt.savefig(out_vario, dpi=300)
-                plt.close()
+            # Plot variogram (global best model only)
+            plt.figure(figsize=(6, 4), layout="constrained")
+            plt.scatter(h, gamma, color="black", label="Empirical")
+            hs = np.linspace(np.min(h), np.max(h), 200)
+            fit = variogram_func(best_model)(hs, *params)
+            plt.plot(hs, fit, label=best_model)
+            plt.title(f"{var_label} Node {node} Variogram ({best_model})")
+            plt.xlabel("Distance (km)")
+            plt.ylabel("Semivariance")
+            plt.legend()
+            plt.grid(True, linestyle="--", alpha=0.4)
+            out_vario = FIG_DIR / f"variogram_{var_label.lower()}_node_{node}.png"
+            plt.savefig(out_vario, dpi=300)
+            plt.close()
 
-                # Kriging (BLUE - ordinary kriging)
-                tgt_lats = np.arange(LAT_MIN, LAT_MAX + 0.1, GRID_STEP_DEG)
-                tgt_lons = np.arange(LON_MIN, LON_MAX + 0.1, GRID_STEP_DEG)
-                lon_k, lat_k, pred = ordinary_kriging(
-                    s_lats, s_lons, s_vals, best_model, params, tgt_lats, tgt_lons
-                )
+            # Kriging (BLUE - ordinary kriging)
+            tgt_lats = np.arange(LAT_MIN, LAT_MAX + 0.1, GRID_STEP_DEG)
+            tgt_lons = np.arange(LON_MIN, LON_MAX + 0.1, GRID_STEP_DEG)
+            lon_k, lat_k, pred = ordinary_kriging(
+                s_lats, s_lons, s_vals, best_model, params, tgt_lats, tgt_lons
+            )
 
-                fig = plt.figure(figsize=(7, 4), layout="constrained")
-                ax = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
-                ax.set_extent([LON_MIN, LON_MAX, LAT_MIN, LAT_MAX], crs=ccrs.PlateCarree())
-                cf = ax.pcolormesh(
-                    lon_k,
-                    lat_k,
-                    pred,
-                    transform=ccrs.PlateCarree(),
-                    cmap="RdBu_r",
-                )
-                ax.coastlines()
-                ax.add_feature(cfeature.BORDERS, linestyle=":")
-                ax.set_title(f"{var_label} Node {node} Kriged Field ({best_model})")
-                plt.colorbar(cf, ax=ax, orientation="vertical", shrink=0.8)
-                out_krig = FIG_DIR / f"kriging_{var_label.lower()}_node_{node}.png"
-                plt.savefig(out_krig, dpi=300)
-                plt.close(fig)
+            fig = plt.figure(figsize=(7, 4), layout="constrained")
+            ax = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
+            ax.set_extent([LON_MIN, LON_MAX, LAT_MIN, LAT_MAX], crs=ccrs.PlateCarree())
+            cf = ax.pcolormesh(
+                lon_k,
+                lat_k,
+                pred,
+                transform=ccrs.PlateCarree(),
+                cmap="RdBu_r",
+            )
+            ax.coastlines()
+            ax.add_feature(cfeature.BORDERS, linestyle=":")
+            ax.set_title(f"{var_label} Node {node} Kriged Field ({best_model})")
+            plt.colorbar(cf, ax=ax, orientation="vertical", shrink=0.8)
+            out_krig = FIG_DIR / f"kriging_{var_label.lower()}_node_{node}.png"
+            plt.savefig(out_krig, dpi=300)
+            plt.close(fig)
 
             summary_rows.append(
                 {
@@ -332,8 +320,6 @@ def main():
                     "sill": params[1],
                     "range_km": params[2],
                     "sse": sse,
-                    "sse_threshold": threshold,
-                    "significant": bool(is_significant),
                 }
             )
 

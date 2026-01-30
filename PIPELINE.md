@@ -81,66 +81,62 @@ python Scripts/run_som_cluster.py
 
 ## 4) Core Analyses
 
-Core 분석 단계는 필요 시 별도 스크립트로 추가하세요.
-
----
-
-## 6) Optional Analyses (Dependent on Step 4)
-
-### AISMR links
-
-```bash
-python Scripts/run_aismr_analysis.py
-python Scripts/run_aismr_rolling_corr.py
-python Scripts/run_aismr_decadal_analysis.py
-```
-
-- **Input**: indices + `Data/iitm_aismr.txt`
-- **Output**: AISMR figures and stats in `Results/`
-
-### NIO SST / OLR coupling
-
-```bash
-python Scripts/run_nio_sst_rolling_corr.py
-python Scripts/run_nio_sst_lagged_analysis.py
-python Scripts/run_nio_sst_ea_olr_rolling_corr.py
-```
-
-- **Input**: indices + `Data/sst_anom_regridded.nc` + `Data/olr_anom2.nc`
-
-### Other teleconnection checks
-
-```bash
-python Scripts/run_wy_index_rolling_corr.py
-python Scripts/run_samoi_n_analysis.py
-```
-
-### SOM node composites (SST/OLR/U850)
-
 ```bash
 python Scripts/run_som_node_composites.py
-```
-
-- **Input**: `Results/som_neuron_indices_jja.csv` + daily anomaly fields
-- **Output**: `Results/Figures/som_node_composites_*.png`
-- **Note**: SST/OLR는 합성장만 생성하고, 이후 분석은 U850만 사용
-
-### Node trend tests (Mann–Kendall)
-
-```bash
 python Scripts/run_mk_trend_node_freq.py
 python Scripts/run_mk_trend_node_freq_decadal.py
-```
-
-- **Output**: `Results/mann_kendall_node_trends.csv`, `Results/mann_kendall_node_trends_decadal.csv`
-
-### Node periodicity (Periodogram + Red-noise + Fisher g-test)
-
-```bash
 python Scripts/run_node_periodogram.py
 ```
 
-- **Output**: `Results/node_periodogram_summary.csv`, `Results/Figures/periodogram_node_*.png`
+- **Outputs**:
+  - `Results/Figures/som_node_composites_*.png` (SST/OLR는 합성장만 생성, 이후 분석은 U850만)
+  - `Results/mann_kendall_node_trends.csv`, `Results/mann_kendall_node_trends_decadal.csv`
+  - `Results/node_periodogram_summary.csv`, `Results/Figures/periodogram_node_*.png`
+
+---
+
+## 5) Optional Analyses (Dependent on Step 4)
+
+### Clustering diagnostics
+
+```bash
+python Scripts/run_som_dendrogram.py
+python Scripts/run_som_node_clustering.py
+```
+
+### Node vs climate indices
+
+```bash
+python Scripts/run_node_climate_correlations.py
+python Scripts/run_node_climate_correlations_significant_plot.py
+python Scripts/run_node_climate_lagged_correlations.py
+```
+
+- **Output**:
+  - `Results/node_climate_correlations.csv`
+  - `Results/Figures/heatmap_node_climate_correlations_significant.png`
+  - `Results/node_climate_lagged_correlations.csv`
+  - `Results/Figures/heatmap_lagged_correlations_*.png`
+
+### Kriging (SST/OLR/U850) (variogram fit + BLUE)
+
+```bash
+python Scripts/run_kriging_node_composites.py
+```
+
+- **Output**: `Results/kriging_variogram_summary.csv`,
+  `Results/Figures/kriging_{sst,olr,u850}_node_*.png`
+
+### Kohonen SOM (R) + Comparison (optional)
+
+```bash
+Rscript Scripts/run_kohonen_som.R
+python Scripts/run_compare_som_kohonen.py
+```
+
+- **Output**: `Results/kohonen_bmu.csv`, `Results/kohonen_codes.csv`,
+  `Results/compare_som_kohonen_confusion.csv`, `Results/compare_som_kohonen_metrics.csv`,
+  `Results/Figures/compare_som_kohonen_confusion.png`
 
 ---
 
@@ -152,24 +148,6 @@ python Scripts/run_node_periodogram.py
 
 ---
 
-## 8) Fast Rebuild (Core Only)
+## 6) Fast Rebuild (Core Only)
 
 지수 기반 재빌드 단계는 현재 워크스페이스에서 제거되었습니다.
-### U850-only kriging (variogram fit + BLUE)
-
-```bash
-python Scripts/run_kriging_node_composites.py
-```
-
-- **Output**: `Results/kriging_variogram_summary.csv`, `Results/Figures/kriging_u850_node_*.png`
-
-### Kohonen SOM (R) + Comparison
-
-```bash
-Rscript Scripts/run_kohonen_som.R
-python Scripts/run_compare_som_kohonen.py
-```
-
-- **Output**: `Results/kohonen_bmu.csv`, `Results/kohonen_codes.csv`,
-  `Results/compare_som_kohonen_confusion.csv`, `Results/compare_som_kohonen_metrics.csv`,
-  `Results/Figures/compare_som_kohonen_confusion.png`

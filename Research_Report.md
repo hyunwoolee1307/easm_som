@@ -44,3 +44,8 @@ The SOM-based workflow provides a consistent framework to summarize EASM variabi
 ## 5. References & Data
 - **Reanalysis**: NCEP/DOE Reanalysis-2 (local processed files).
 - **Climate Indices**: NOAA PSL / CPC (for optional analyses).
+
+## 6. Session Log (January 30, 2026)
+- SOM stippled composite colorbar range narrowed to **-5 to +5**.
+- NPGO node-frequency plot right y-axis range set to **-1 to +1**.
+- Results regenerated for the affected plots.

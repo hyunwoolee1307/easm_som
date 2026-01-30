@@ -164,8 +164,8 @@ def main():
     # ---------------------------------------------------------
     m1 = 3
     m2 = 3
-    nter = 5000
-    alpha0 = 1.0
+    nter = 4000
+    alpha0 = 0.5
     alphamin = 0.05
     taua = 1000.0
     sigma0 = 2.0
@@ -184,7 +184,8 @@ def main():
         alphamin=alphamin, 
         sigma0=sigma0, 
         taus=taus,
-        normalize_weights=True
+        normalize_weights=True,
+        seed=42
     )
     
     # ---------------------------------------------------------

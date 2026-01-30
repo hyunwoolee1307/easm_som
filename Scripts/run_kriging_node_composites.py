@@ -183,7 +183,9 @@ def main():
         (DATA_DIR / "uwnd850_anom.nc", "U850", "uwnd"),
     ]
 
-    summary_rows = []
+    # First pass: fit all models and collect SSE per model
+    fit_cache = {}
+    sse_by_model = {"spherical": [], "exponential": [], "gaussian": []}
 
     for path, var_label, var_name_hint in configs:
         ds = xr.open_dataset(path)
@@ -205,7 +207,6 @@ def main():
             comp = da_sel.isel(time=mask).mean(dim="time")
             values = comp.values
 
-            # Flatten
             lon_grid, lat_grid = np.meshgrid(lons, lats)
             vals = values.flatten()
             latf = lat_grid.flatten()
@@ -216,26 +217,67 @@ def main():
             latf = latf[valid]
             lonf = lonf[valid]
 
-            # Sample
             n_points = min(SAMPLE_SIZE, len(vals))
             idx = RNG.choice(len(vals), size=n_points, replace=False)
             s_vals = vals[idx]
             s_lats = latf[idx]
             s_lons = lonf[idx]
 
-            # Variogram
             h, gamma = empirical_variogram(s_lats, s_lons, s_vals, n_bins=12)
-            best_name, best_params, all_fits = fit_variogram(h, gamma)
+            _, _, all_fits = fit_variogram(h, gamma)
 
-            # Plot variogram
+            fit_cache[(var_label, node)] = {
+                "s_vals": s_vals,
+                "s_lats": s_lats,
+                "s_lons": s_lons,
+                "h": h,
+                "gamma": gamma,
+                "fits": {name: (params, sse) for name, params, sse in all_fits},
+            }
+
+            for name, _, sse in all_fits:
+                sse_by_model[name].append(sse)
+
+        ds.close()
+
+    avg_sse = {
+        name: (np.mean(vals) if vals else np.inf) for name, vals in sse_by_model.items()
+    }
+    best_model = min(avg_sse.items(), key=lambda kv: kv[1])[0]
+    print(f"Selected global variogram model: {best_model}")
+
+    summary_rows = []
+    for path, var_label, var_name_hint in configs:
+        ds = xr.open_dataset(path)
+        var = var_name_hint if var_name_hint in ds.data_vars else list(ds.data_vars)[0]
+        da = ds[var]
+
+        da = da.sortby("lat").sortby("lon")
+        da = da.sel(lon=slice(LON_MIN, LON_MAX), lat=slice(LAT_MIN, LAT_MAX))
+        da_sel = da.sel(time=times)
+
+        lats = da_sel.lat.values
+        lons = da_sel.lon.values
+
+        for node in range(1, 10):
+            cache = fit_cache.get((var_label, node))
+            if cache is None:
+                continue
+
+            s_vals = cache["s_vals"]
+            s_lats = cache["s_lats"]
+            s_lons = cache["s_lons"]
+            h = cache["h"]
+            gamma = cache["gamma"]
+            params, _ = cache["fits"][best_model]
+
+            # Plot variogram (global best model only)
             plt.figure(figsize=(6, 4), layout="constrained")
             plt.scatter(h, gamma, color="black", label="Empirical")
             hs = np.linspace(np.min(h), np.max(h), 200)
-            for name, params, _ in all_fits:
-                fit = variogram_func(name)(hs, *params)
-                ls = "-" if name == best_name else "--"
-                plt.plot(hs, fit, label=name, linestyle=ls)
-            plt.title(f"{var_label} Node {node} Variogram")
+            fit = variogram_func(best_model)(hs, *params)
+            plt.plot(hs, fit, label=best_model)
+            plt.title(f"{var_label} Node {node} Variogram ({best_model})")
             plt.xlabel("Distance (km)")
             plt.ylabel("Semivariance")
             plt.legend()
@@ -248,10 +290,9 @@ def main():
             tgt_lats = np.arange(LAT_MIN, LAT_MAX + 0.1, GRID_STEP_DEG)
             tgt_lons = np.arange(LON_MIN, LON_MAX + 0.1, GRID_STEP_DEG)
             lon_k, lat_k, pred = ordinary_kriging(
-                s_lats, s_lons, s_vals, best_name, best_params, tgt_lats, tgt_lons
+                s_lats, s_lons, s_vals, best_model, params, tgt_lats, tgt_lons
             )
 
-            # Plot kriged field
             fig = plt.figure(figsize=(7, 4), layout="constrained")
             ax = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
             ax.set_extent([LON_MIN, LON_MAX, LAT_MIN, LAT_MAX], crs=ccrs.PlateCarree())
@@ -264,7 +305,7 @@ def main():
             )
             ax.coastlines()
             ax.add_feature(cfeature.BORDERS, linestyle=":")
-            ax.set_title(f"{var_label} Node {node} Kriged Field ({best_name})")
+            ax.set_title(f"{var_label} Node {node} Kriged Field ({best_model})")
             plt.colorbar(cf, ax=ax, orientation="vertical", shrink=0.8)
             out_krig = FIG_DIR / f"kriging_{var_label.lower()}_node_{node}.png"
             plt.savefig(out_krig, dpi=300)
@@ -274,10 +315,10 @@ def main():
                 {
                     "variable": var_label,
                     "node": node,
-                    "model": best_name,
-                    "nugget": best_params[0],
-                    "sill": best_params[1],
-                    "range_km": best_params[2],
+                    "model": best_model,
+                    "nugget": params[0],
+                    "sill": params[1],
+                    "range_km": params[2],
                 }
             )
 

@@ -3,6 +3,11 @@
 ## Environment
 - Use `conda env create -f environment.yml` and `conda activate nwp_som`.
 - Run scripts from repo root unless noted otherwise.
+## System Resource Policy
+- Check system specs with `neofetch --stdout` before heavy runs.
+- Limit resource usage to **<= 80%** of available CPU, memory, and disk during processing.
+- Use `Scripts/run_with_limits.sh` to run heavy commands with enforced limits.
+  - Example: `Scripts/run_with_limits.sh conda run -n nwp_som python Scripts/run_som_cluster.py`
 
 ## Core Execution Order
 1) `Scripts/run_som_cluster.py`

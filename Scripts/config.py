@@ -14,17 +14,13 @@ INDICES_DIR.mkdir(parents=True, exist_ok=True)
 
 # Data Files
 DATA_FILES = {
-    "CLUSTER_COUNTS": DATA_DIR / "u850_cluster_counts.csv",
     "SST_ANOM": DATA_DIR / "sst_anom_regridded.nc",
     "OLR_ANOM": DATA_DIR / "olr_anom2.nc",
     "U850_ANOM": DATA_DIR / "uwnd850_anom.nc",
 }
 
 # Index Files
-INDEX_FILES = {
-    "CLUSTER_INDEX": INDICES_DIR / "cluster_index.csv",
-    "U850_JJA_INDEX": INDICES_DIR / "u850_jja_index.csv",
-}
+INDEX_FILES = {}
 
 # Analysis Settings
 SEASONS: Dict[str, int] = {

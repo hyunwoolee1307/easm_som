@@ -19,7 +19,6 @@ conda activate nwp_som
 
 These files are **required** for the core pipeline:
 
-- `Data/u850_cluster_counts.csv`  (cluster frequency table; columns `1`..`9`)
 - `Data/uwnd850_anom.nc`          (U850 anomaly field)
 - `Data/sst_anom_regridded.nc`    (SST anomaly on the U850 grid)
 - `Data/olr_anom2.nc`             (OLR anomaly field)
@@ -68,17 +67,7 @@ python Scripts/calc_coarson.py
 
 ---
 
-## 3) SOM Clustering and Cluster Counts
-
-The core pipeline needs `Data/u850_cluster_counts.csv`.
-There are two ways to generate it:
-
-### Option A: Notebook-driven (current, used in past runs)
-
-- `Notebooks/cluster_u850_composite_u850.ipynb` (or `Notebooks/cluster_u850_composite_sst.ipynb`)
-- These notebooks save `Data/u850_cluster_counts.csv` directly.
-
-### Option B: Script-driven (SOM only, plus manual counts extraction)
+## 3) SOM Clustering
 
 ```bash
 python Scripts/run_som_cluster.py
@@ -88,71 +77,11 @@ python Scripts/run_som_cluster.py
 - **Output**: `Results/som_neuron_indices_jja.csv`, `Results/som_yearly_stats.csv`
 - **Preprocessing**: monthly anomaly + 10-day low-pass, then JJA selection (see `Scripts/run_som_cluster.py`)
 
-To make this output usable by the index generator, build a `Data/u850_cluster_counts.csv`
-with columns `year,1,2,...,9` (cluster counts per year). You can derive it from
-`Results/som_yearly_stats.csv` or `Results/som_neuron_indices_jja.csv`.
-
-Example conversion from `Results/som_yearly_stats.csv`:
-
-```bash
-python - <<'PY'
-import pandas as pd
-
-stats = pd.read_csv("Results/som_yearly_stats.csv")
-cols = ["year"] + [f"node_{i}_count" for i in range(1, 10)]
-df = stats[cols].rename(columns={f"node_{i}_count": str(i) for i in range(1, 10)})
-df.to_csv("Data/u850_cluster_counts.csv", index=False)
-print("Wrote Data/u850_cluster_counts.csv")
-PY
-```
-
 ---
 
-## 4) Core Indices
+## 4) Core Analyses
 
-```bash
-python Scripts/create_indices.py
-```
-
-- **Input**: `Data/u850_cluster_counts.csv`, `Data/uwnd850_anom.nc`
-- **Output**:
-  - `Results/Indices/cluster_index.csv`
-  - `Results/Indices/u850_jja_index.csv`
-  - `Results/Figures/cluster_index_timeseries.png`
-  - `Results/Figures/u850_jja_index_timeseries.png`
-
----
-
-## 5) Core Analyses
-
-### 5.1 Global correlation maps
-
-```bash
-python Scripts/run_correlation.py
-```
-
-- **Input**: indices from Step 4 + `Data/sst_anom_regridded.nc`, `Data/olr_anom2.nc`, `Data/uwnd850_anom.nc`
-- **Output**: `Results/Figures/corr_*` PNGs
-
-### 5.2 Composite difference maps (JJA)
-
-```bash
-python Scripts/run_composite.py
-```
-
-- **Input**: indices from Step 4 + same anomaly fields as above
-- **Output**: `Results/Figures/composite_*` PNGs
-
-### 5.3 Teleconnection correlations
-
-```bash
-python Scripts/run_teleconnections.py
-```
-
-- **Input**: indices from Step 4 + climate index files in `Data/`
-- **Output**:
-  - `Results/teleconnection_correlations.csv`
-  - `Results/Figures/teleconnection_bar_*` PNGs
+Core 분석 단계는 필요 시 별도 스크립트로 추가하세요.
 
 ---
 
@@ -219,17 +148,9 @@ python Scripts/run_node_periodogram.py
 - Update `Scripts/config.py` if any filenames differ from your local `Data/`.
 - Confirm required NetCDF files exist **before** running the core steps.
 - Run steps **in order**; Steps 4-6 depend on outputs from earlier steps.
-- If you regenerate `Data/u850_cluster_counts.csv`, rerun Step 4 and downstream steps.
 
 ---
 
 ## 8) Fast Rebuild (Core Only)
 
-If all required inputs already exist in `Data/`:
-
-```bash
-python Scripts/create_indices.py
-python Scripts/run_correlation.py
-python Scripts/run_composite.py
-python Scripts/run_teleconnections.py
-```
+지수 기반 재빌드 단계는 현재 워크스페이스에서 제거되었습니다.

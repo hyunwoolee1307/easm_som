@@ -6,11 +6,6 @@
 
 ## Core Execution Order
 1) `Scripts/run_som_cluster.py`
-2) (If needed) build `Data/u850_cluster_counts.csv` from `Results/som_yearly_stats.csv`.
-3) `Scripts/create_indices.py`
-4) `Scripts/run_correlation.py`
-5) `Scripts/run_composite.py`
-6) `Scripts/run_teleconnections.py`
 
 ## SOM Preprocessing (Current)
 - Monthly anomaly removal → 10-day low-pass → JJA selection.

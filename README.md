@@ -27,8 +27,8 @@ NWP_SOM/
 ├── Scripts/                # 파이썬 분석 스크립트 (Modernized)
 │   ├── config.py           # 중앙 설정 파일 (경로, 변수, 시즌 정의)
 │   ├── analysis_utils.py   # 공통 분석 함수 (데이터 로드, 상관분석, 플롯)
-│   ├── create_indices.py   # 기후 지수 생성 (Climate Index, U850 JJA Index)
-│   └── run_correlation.py  # 전지구 계절별 상관분석 실행
+│   ├── create_indices.py   # (Removed) 이전 지수 생성 스크립트
+│   └── run_correlation.py  # (Removed) 이전 상관분석 스크립트
 ├── Tests/                  # 유닛 테스트
 │   └── test_analysis_utils.py
 ├── Results/                # 분석 결과
@@ -53,17 +53,8 @@ conda activate nwp_som
 ```
 `Data/`와 `Results/`는 로컬 경로(`/home/hyunwoo/Projects/NWP_SOM/`)에 존재합니다.
 
-### 2. 기후 지수 생성
-Cluster Climate Index와 U850 JJA Index를 생성하여 `Results/Indices`에 저장합니다.
-```bash
-python Scripts/create_indices.py
-```
-
-### 3. 상관분석 수행
-생성된 지수와 환경 변수(SST, OLR, U850) 간의 전지구 계절별 상관분석을 수행하고 `Results/Figures`에 시각화합니다.
-```bash
-python Scripts/run_correlation.py
-```
+### 2. 지수/상관분석
+현재 워크스페이스에서는 지수 기반 분석 단계가 제거되었습니다.
 
 ### 4. 설정 변경 (`config.py`)
 데이터 경로, 분석 시즌, 도메인 설정은 `Scripts/config.py`에서 중앙 관리됩니다.
@@ -82,8 +73,6 @@ pytest Tests/
 
 ## 📊 주요 산출물
 
-- **Cluster Climate Index**: Cluster 1(양의 위상)과 Cluster 5(음의 위상)의 표준화된 차이
-- **U850 JJA Index**: 동아시아/서태평양 영역의 남북 850hPa 동서바람 차이 (몬순 지수)
 - **Global Correlation Maps**: 각 지수와 SST/OLR/Wind 간의 계절별(DJF, MAM, JJA, SON) 상관계수 지도
 
 ---

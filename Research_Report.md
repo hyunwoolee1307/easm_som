@@ -6,13 +6,11 @@
 ---
 
 ## 1. Executive Summary
-This study investigates the variability of the East Asian Summer Monsoon (EASM) using Self-Organizing Maps (SOM) and defines a new "U850 JJA Index" to quantify its intensity. We identify a robust linkage between this index and the Indian Summer Monsoon (AISMR), which has significantly strengthened since the early 2000s. Furthermore, the index exhibits strong teleconnections with global climate modes, particularly the North Atlantic Oscillation (NAO) and Pacific North American (PNA) pattern.
+This study investigates the variability of the East Asian Summer Monsoon (EASM) using Self-Organizing Maps (SOM). Index-based analyses have been removed from this workspace per current scope.
 
 ## 2. Methodology
 -   **Pattern Classification**: A 3x3 SOM was applied to Summer (JJA) 850hPa zonal wind anomalies (1991-2023) over the Western North Pacific.
--   **Index Definition**:
-    -   **Cluster Climate Index**: Difference between frequency of positive (Cluster 1) and negative (Cluster 5) phases.
-    -   **U850 JJA Index**: Meridional shear of zonal wind, representing the EASM circulation strength.
+-   **Index Definition**: Removed from this workspace per current scope.
 -   **Teleconnection Analysis**: Pearson correlation with standardized global climate indices (ONI, DMI, PDO, NPGO, NAO, PNA) and All India Summer Monsoon Rainfall (AISMR).
 -   **SOM Preprocessing**: Monthly anomaly removal, 10-day low-pass filtering, then JJA selection prior to SOM training.
 -   **Node Trend Tests**: Mann–Kendall test on annual node frequencies and decadal aggregates.
@@ -22,14 +20,14 @@ This study investigates the variability of the East Asian Summer Monsoon (EASM) 
 ## 3. Key Findings
 
 ### 3.1 Composite Anomalies
-Composite analysis reveals that the positive phase of the U850 JJA Index is associated with:
+Composite analysis based on the removed index pipeline has been removed from this workspace per current scope.
 -   **SST**: Warm anomalies in the Western Pacific Warm Pool and cold anomalies in the central Pacific (La Niña-like).
 -   **Circulation**: A strong cyclonic anomaly over the East China Sea and anticyclonic anomaly over the South China Sea.
 -   **Convection (OLR)**: Enhanced convection (negative OLR) over the Maritime Continent and suppressed convection over the western subtropical Pacific.
 -   *(See `Results/Figures/composite_*` for detailed maps)*
 
 ### 3.2 Global Teleconnections
-The U850 JJA Index shows significant correlations with large-scale climate modes:
+Teleconnection results tied to the removed index pipeline have been removed from this workspace per current scope.
 -   **NAO (Winter/DJF)**: Strong negative correlation (**r ~ -0.6**), suggesting winter North Atlantic signals may precursor EASM variability.
 -   **PNA**: Moderate positive correlation.
 -   **ENSO**: Varying relationship, suggesting the pattern captures non-ENSO variance as well.

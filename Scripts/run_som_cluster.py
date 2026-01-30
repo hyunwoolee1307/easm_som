@@ -28,8 +28,8 @@ def plot_som_nodes(X_raw, node_ids, m1, m2, lats, lons, output_dir):
     clim_mean = np.mean(X_raw, axis=1).reshape(-1, 1) # Shape: (Space, 1)
     
     # [수정] 컬러바 레벨 설정 (0을 중심으로 대칭)
-    # -20 ~ 20 범위, 1.0 간격으로 설정하여 0이 정확히 중심에 오도록 함
-    limit = 20
+    # -5 ~ 5 범위로 축소
+    limit = 5
     levels = np.linspace(-limit, limit, 41)
     
     # Plotting loop
@@ -97,7 +97,7 @@ def plot_som_nodes(X_raw, node_ids, m1, m2, lats, lons, output_dir):
     # Colorbar 추가
     cbar_ax = fig.add_axes([0.92, 0.15, 0.02, 0.7])
     # Ticks 설정을 통해 0이 명확히 보이도록 함
-    cbar_ticks = np.linspace(-limit, limit, 9) # -20, -15, -10, -5, 0, 5, 10, 15, 20
+    cbar_ticks = np.linspace(-limit, limit, 9) # -5, -3.75, -2.5, -1.25, 0, 1.25, 2.5, 3.75, 5
     fig.colorbar(cf, cax=cbar_ax, label='u850 (m/s)', ticks=cbar_ticks)
     
     plt.suptitle('SOM 3x3 Node Composites (JJA u850)\nStippling indicates p < 0.05 (vs Climatology)', fontsize=16, y=0.98)
